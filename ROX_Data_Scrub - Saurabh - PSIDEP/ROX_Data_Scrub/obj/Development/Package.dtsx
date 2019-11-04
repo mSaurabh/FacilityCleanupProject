@@ -1,0 +1,2021 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CheckpointFileName="C:\DO NOT DELETE SSIS\ROX_Data_Scrub - Saurabh - PSIDEP\Checkpoints for PSIDEP Project\PSIDEP_FDP_Checkpoint"
+  DTS:CheckpointUsage="1"
+  DTS:CreationDate="8/23/2019"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="WEST-DBATOOLS"
+  DTS:CreatorName="GRASP-HOSTING\Optima.SaurabhM"
+  DTS:Description="Project to clean up facilities and related info as requested by customer."
+  DTS:DTSID="{8010D267-64A3-4922-B17A-496D8EAFE4D2}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.3002.107"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:SaveCheckpoints="True"
+  DTS:VersionBuild="60"
+  DTS:VersionGUID="{512A723F-E6CA-40CC-973C-C7BF2842E516}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[FacID's]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{ABAA0417-4F80-49DA-AD95-799ACF2C08C7}"
+      DTS:ObjectName="FacID's">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\DO NOT DELETE SSIS\ROX_Data_Scrub - Saurabh - PSIDEP\Input_Facility_IDs_ToDelete_TextFile\FacID.txt">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Column 0"
+              DTS:DTSID="{243D3BA3-BF5E-49A2-8AFD-F82B01766B44}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[WEST-CL04SQL3\SQL3.DBA]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+      DTS:ObjectName="WEST-CL04SQL3\SQL3.DBA">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=WEST-CL04SQL3\SQL3;Initial Catalog=DBA;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[WEST-CL04SQL3\SQL3.ROX_PSIDEP]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{70A4522A-5F43-4839-B007-5B707253D003}"
+      DTS:ObjectName="WEST-CL04SQL3\SQL3.ROX_PSIDEP">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=WEST-CL04SQL3\SQL3;Initial Catalog=ROX_PSIDEP;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Data Scrub 1"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{D5091F7B-E2D6-41F6-B30B-E41170404E53}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Data Scrub 1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T1_ResidentRoute"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{01E1C3CB-D05E-46B6-AA3A-606502924C92}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Data_Validation_usp_FDP_P1T1_ResidentRoute"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+              SQLTask:SqlStatementSource="INSERT INTO DBA.ETL.ROX_Data_Scrub_Validation (TableName,ResultCount)&#xA;EXECUTE [ROX_PSIDEP].dbo.usp_FDP_P1T1_ResidentRoutePre_Data_Validation;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T2_TxSessionRouteDeletion"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{5D0DC9AC-45FA-404B-97D7-23E0E6C17D51}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Data_Validation_usp_FDP_P1T2_TxSessionRouteDeletion"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+              SQLTask:SqlStatementSource="INSERT INTO DBA.ETL.ROX_Data_Scrub_Validation (TableName,ResultCount)&#xA;EXECUTE [ROX_PSIDEP].dbo.usp_FDP_P1T2_TxSessionRouteDeletion_Data_Validation;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T3_TxDocumentRouteDeletion"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{3a097616-37fe-48b4-aac4-27a55b6f8885}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Data_Validation_usp_FDP_P1T3_TxDocumentRouteDeletion"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+              SQLTask:SqlStatementSource="INSERT INTO DBA.ETL.ROX_Data_Scrub_Validation (TableName,ResultCount)&#xA;EXECUTE [ROX_PSIDEP].dbo.usp_FDP_P1T3_TxDocumentRouteDeletion_Data_Validation;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T4_TxTrackRouteDeletion"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{b34f6c36-b1ad-4c81-b345-b4dd1b7151cf}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Data_Validation_usp_FDP_P1T4_TxTrackRouteDeletion"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+              SQLTask:SqlStatementSource="INSERT INTO DBA.ETL.ROX_Data_Scrub_Validation (TableName,ResultCount)&#xA;EXECUTE [ROX_PSIDEP].dbo.usp_FDP_P1T4_TxTrackRouteDeletion_Data_Validation;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T5_PatientCaseRouteDeletion"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{2df19bf7-76d7-4abc-9b29-ba8129a3beab}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Data_Validation_usp_FDP_P1T5_PatientCaseRouteDeletion"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+              SQLTask:SqlStatementSource="INSERT INTO DBA.ETL.ROX_Data_Scrub_Validation (TableName,ResultCount)&#xA;EXECUTE [ROX_PSIDEP].dbo.usp_FDP_P1T5_PatientCaseRouteDeletion_Data_Validation;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T6_ResidentRoutePost"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{fbf06aa4-4303-4fde-b902-0f140617ad7b}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Data_Validation_usp_FDP_P1T6_ResidentRoutePost"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+              SQLTask:SqlStatementSource="INSERT INTO DBA.ETL.ROX_Data_Scrub_Validation (TableName,ResultCount)&#xA;EXECUTE [ROX_PSIDEP].dbo.usp_FDP_P1T6_ResidentRoutePost_Data_Validation;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Execute usp_FDP_P1T1_ResidentRoutePre"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{bb44962b-62c6-44e3-9376-3270343f0ea9}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute usp_FDP_P1T1_ResidentRoutePre"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+              SQLTask:SqlStatementSource="EXECUTE dbo.usp_FDP_P1T1_ResidentRoutePre;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Execute usp_FDP_P1T2_TxSessionRouteDeletion"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{307641e6-0747-4505-a44f-b2328fd21c7c}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute usp_FDP_P1T2_TxSessionRouteDeletion"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+              SQLTask:SqlStatementSource="EXECUTE dbo.usp_FDP_P1T2_TxSessionRouteDeletion;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Execute usp_FDP_P1T3_TxDocumentRouteDeletion"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{be5149ef-8018-42cf-99d3-84c646111c04}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute usp_FDP_P1T3_TxDocumentRouteDeletion"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+              SQLTask:SqlStatementSource="EXECUTE dbo.usp_FDP_P1T3_TxDocumentRouteDeletion;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Execute usp_FDP_P1T4_TxTrackRouteDeletion"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{fdd4413f-86e7-4b2e-b1b8-004d8484d86f}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute usp_FDP_P1T4_TxTrackRouteDeletion"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+              SQLTask:SqlStatementSource="EXECUTE dbo.usp_FDP_P1T4_TxTrackRouteDeletion;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Execute usp_FDP_P1T5_PatientCaseRouteDeletion"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{2a2b68a1-1477-4e33-b95e-35669f1041fc}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute usp_FDP_P1T5_PatientCaseRouteDeletion"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+              SQLTask:SqlStatementSource="EXECUTE dbo.usp_FDP_P1T5_PatientCaseRouteDeletion;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Execute usp_FDP_P1T6_ResidentRoutePost"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{418726cc-7488-4349-b42e-341334abf11a}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute usp_FDP_P1T6_ResidentRoutePost"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+              SQLTask:SqlStatementSource="EXECUTE dbo.usp_FDP_P1T6_ResidentRoutePost;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 1\Truncate Table ROX Data Scrub Validation"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{C15BC417-293A-46CF-98EB-9F885B46A9D2}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table ROX Data Scrub Validation"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+              SQLTask:SqlStatementSource="EXEC [ETL].[usp_Data_Scrub_Validation]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 1.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{49812AB5-3E05-4FCF-B02F-C63DB8024188}"
+          DTS:From="Package\Data Scrub 1\Execute usp_FDP_P1T1_ResidentRoutePre"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T1_ResidentRoute" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 1.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{DEABEE02-3D36-44AC-B3AF-911FD886F5F1}"
+          DTS:From="Package\Data Scrub 1\Execute usp_FDP_P1T2_TxSessionRouteDeletion"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T2_TxSessionRouteDeletion" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 1.PrecedenceConstraints[Constraint 10]"
+          DTS:CreationName=""
+          DTS:DTSID="{8824756D-9AD0-4884-A717-C7990FEE9294}"
+          DTS:From="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T5_PatientCaseRouteDeletion"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 10"
+          DTS:To="Package\Data Scrub 1\Execute usp_FDP_P1T6_ResidentRoutePost" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 1.PrecedenceConstraints[Constraint 11]"
+          DTS:CreationName=""
+          DTS:DTSID="{D052740F-D70D-468F-8B49-D2C655785E55}"
+          DTS:From="Package\Data Scrub 1\Execute usp_FDP_P1T6_ResidentRoutePost"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 11"
+          DTS:To="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T6_ResidentRoutePost" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 1.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{94E7D61B-4E9A-4FB4-9216-91A21D1A9E0D}"
+          DTS:From="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T2_TxSessionRouteDeletion"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\Data Scrub 1\Execute usp_FDP_P1T3_TxDocumentRouteDeletion" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 1.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{09E75DFC-CD50-4BDD-B749-5EF6DE588156}"
+          DTS:From="Package\Data Scrub 1\Execute usp_FDP_P1T3_TxDocumentRouteDeletion"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T3_TxDocumentRouteDeletion" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 1.PrecedenceConstraints[Constraint 4]"
+          DTS:CreationName=""
+          DTS:DTSID="{58C53B5D-5697-4312-AC4D-23A338CD636E}"
+          DTS:From="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T3_TxDocumentRouteDeletion"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 4"
+          DTS:To="Package\Data Scrub 1\Execute usp_FDP_P1T4_TxTrackRouteDeletion" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 1.PrecedenceConstraints[Constraint 5]"
+          DTS:CreationName=""
+          DTS:DTSID="{6F898AAD-2946-4B0B-A9FD-E87EA380FA65}"
+          DTS:From="Package\Data Scrub 1\Truncate Table ROX Data Scrub Validation"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 5"
+          DTS:To="Package\Data Scrub 1\Execute usp_FDP_P1T1_ResidentRoutePre" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 1.PrecedenceConstraints[Constraint 6]"
+          DTS:CreationName=""
+          DTS:DTSID="{E7DB0DFC-EA4F-4804-B4D1-75625D50490C}"
+          DTS:From="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T1_ResidentRoute"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 6"
+          DTS:To="Package\Data Scrub 1\Execute usp_FDP_P1T2_TxSessionRouteDeletion" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 1.PrecedenceConstraints[Constraint 7]"
+          DTS:CreationName=""
+          DTS:DTSID="{5EFD1D63-5EAA-4ECE-AAD8-FE4E02166E2E}"
+          DTS:From="Package\Data Scrub 1\Execute usp_FDP_P1T4_TxTrackRouteDeletion"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 7"
+          DTS:To="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T4_TxTrackRouteDeletion" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 1.PrecedenceConstraints[Constraint 8]"
+          DTS:CreationName=""
+          DTS:DTSID="{36118BC0-E3B2-4D39-9E1D-2DFE45AD6BBF}"
+          DTS:From="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T4_TxTrackRouteDeletion"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 8"
+          DTS:To="Package\Data Scrub 1\Execute usp_FDP_P1T5_PatientCaseRouteDeletion" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 1.PrecedenceConstraints[Constraint 9]"
+          DTS:CreationName=""
+          DTS:DTSID="{B39DA30A-59F9-407C-8B02-2DC2FA1508E4}"
+          DTS:From="Package\Data Scrub 1\Execute usp_FDP_P1T5_PatientCaseRouteDeletion"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 9"
+          DTS:To="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T5_PatientCaseRouteDeletion" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Data Scrub 2"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{418E5AB6-C294-49E0-AA03-C9A44CE4D753}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Data Scrub 2">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 2\Execute usp_FDP_P2T1_FacilityPreRoute"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{cdc91517-8d13-431a-ac52-7cf3c3a40698}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute usp_FDP_P2T1_FacilityPreRoute"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+              SQLTask:SqlStatementSource="EXECUTE dbo.usp_FDP_P2T1_FacilityPreRoute;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 2\Execute usp_FDP_P2T2_FacilityIntakeSourceRoute"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{aef6824b-c60f-4e6c-b3f7-51fa40a6913e}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute usp_FDP_P2T2_FacilityIntakeSourceRoute"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+              SQLTask:SqlStatementSource="EXECUTE dbo.usp_FDP_P2T2_FacilityIntakeSourceRoute;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 2\Execute usp_FDP_P2T3_FacilityPostRoute"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{ec7fdb5d-b2c2-4bd9-8e94-e9978bbfc37f}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute usp_FDP_P2T3_FacilityPostRoute"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+              SQLTask:SqlStatementSource="EXECUTE dbo.usp_FDP_P2T3_FacilityPostRoute;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 2\P2T1_DataValidation"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{2AFBF595-276D-49A3-9F8A-E7786E921F34}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="P2T1_DataValidation"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+              SQLTask:SqlStatementSource="INSERT INTO DBA.ETL.ROX_Data_Scrub_Validation (TableName,ResultCount)&#xA;EXECUTE [ROX_PSIDEP].dbo.usp_FDP_P2T1_FacilityPreRoute_Data_Validation;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 2\P2T2_DataValidation"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{13312075-c2a9-4e8d-98e8-3bca0c3dd7e7}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="P2T2_DataValidation"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+              SQLTask:SqlStatementSource="INSERT INTO DBA.ETL.ROX_Data_Scrub_Validation (TableName,ResultCount)&#xA;EXECUTE [ROX_PSIDEP].dbo.usp_FDP_P2T2_FacilityIntakeSourceRoute_Data_Validation;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 2\P2T3_DataValidation"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{f2d7ac56-213f-498b-be40-774ac73e2521}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="P2T3_DataValidation"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+              SQLTask:SqlStatementSource="INSERT INTO DBA.ETL.ROX_Data_Scrub_Validation (TableName,ResultCount)&#xA;EXECUTE [ROX_PSIDEP].dbo.usp_FDP_P2T3_FacilityPostRoute_Data_Validation;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 2\P2T6_DataValidation"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{7b8133d1-7d84-4b0f-824e-246d45a7e17d}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="P2T6_DataValidation"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+              SQLTask:SqlStatementSource="INSERT INTO DBA.ETL.ROX_Data_Scrub_Validation (TableName,ResultCount)&#xA;EXECUTE [ROX_PSIDEP].dbo.usp_FDP_P2T6_FacilityPostRoute_Data_Validation;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 2\usp_FDP_P2T4_FacilityPostRoute"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{A705CDCE-0CD4-4B20-93D0-9545414F9DF9}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="usp_FDP_P2T4_FacilityPostRoute"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+              SQLTask:SqlStatementSource="EXECUTE dbo.usp_FDP_P2T4_FacilityPostRoute;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 2\usp_FDP_P2T5_FacilityPostRoute"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{64D77968-4BBC-4DD3-94E3-CF2D4D8716B4}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="usp_FDP_P2T5_FacilityPostRoute"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+              SQLTask:SqlStatementSource="EXECUTE dbo.usp_FDP_P2T5_FacilityPostRoute;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Data Scrub 2\usp_FDP_P2T6_FacilityPostRoute"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{404EF8F0-BD1D-497B-8550-886E2EA18496}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="usp_FDP_P2T6_FacilityPostRoute"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+              SQLTask:SqlStatementSource="EXECUTE dbo.usp_FDP_P2T6_FacilityPostRoute;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 2.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{EF9E61CD-986C-44B2-B9CB-D829C46D1D15}"
+          DTS:From="Package\Data Scrub 2\Execute usp_FDP_P2T1_FacilityPreRoute"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Data Scrub 2\P2T1_DataValidation" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 2.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{07C3565F-5D2B-49C2-87F5-6171504B37C2}"
+          DTS:From="Package\Data Scrub 2\Execute usp_FDP_P2T2_FacilityIntakeSourceRoute"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Data Scrub 2\P2T2_DataValidation" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 2.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{E826EFDF-6E9D-4CDC-99E7-25C724AD4403}"
+          DTS:From="Package\Data Scrub 2\Execute usp_FDP_P2T3_FacilityPostRoute"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\Data Scrub 2\P2T3_DataValidation" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 2.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{639766DE-33A5-4184-AC6A-A00224034F31}"
+          DTS:From="Package\Data Scrub 2\usp_FDP_P2T4_FacilityPostRoute"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\Data Scrub 2\usp_FDP_P2T5_FacilityPostRoute" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 2.PrecedenceConstraints[Constraint 4]"
+          DTS:CreationName=""
+          DTS:DTSID="{825986A3-C83D-4967-9292-14E4DCEB8132}"
+          DTS:From="Package\Data Scrub 2\usp_FDP_P2T5_FacilityPostRoute"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 4"
+          DTS:To="Package\Data Scrub 2\usp_FDP_P2T6_FacilityPostRoute" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 2.PrecedenceConstraints[Constraint 5]"
+          DTS:CreationName=""
+          DTS:DTSID="{F4B66495-EBA3-42C2-8203-61992C861444}"
+          DTS:From="Package\Data Scrub 2\P2T1_DataValidation"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 5"
+          DTS:To="Package\Data Scrub 2\Execute usp_FDP_P2T2_FacilityIntakeSourceRoute" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 2.PrecedenceConstraints[Constraint 6]"
+          DTS:CreationName=""
+          DTS:DTSID="{469493AB-56F2-4BCB-A709-E1010BE26F19}"
+          DTS:From="Package\Data Scrub 2\P2T2_DataValidation"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 6"
+          DTS:To="Package\Data Scrub 2\Execute usp_FDP_P2T3_FacilityPostRoute" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 2.PrecedenceConstraints[Constraint 7]"
+          DTS:CreationName=""
+          DTS:DTSID="{45BE4C66-00FA-421D-AB94-717B07D71000}"
+          DTS:From="Package\Data Scrub 2\P2T3_DataValidation"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 7"
+          DTS:To="Package\Data Scrub 2\usp_FDP_P2T4_FacilityPostRoute" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Data Scrub 2.PrecedenceConstraints[Constraint 8]"
+          DTS:CreationName=""
+          DTS:DTSID="{BE96DF2A-D693-4235-B750-BE623E103067}"
+          DTS:From="Package\Data Scrub 2\usp_FDP_P2T6_FacilityPostRoute"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 8"
+          DTS:To="Package\Data Scrub 2\P2T6_DataValidation" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Disable all Foreign Key Constraints &amp; Triggers"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{CF5AA2E5-96CC-4373-9E24-6D8F3015FC8C}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Disable all Foreign Key Constraints &amp; Triggers"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+          SQLTask:SqlStatementSource="EXECUTE  [dbo].[usp_FDP_EnableDisable_Triggers_Constraints] @disable =1;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Enable all Foreign Key Constraints &amp; Triggers 1"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{568eb165-f841-4125-963d-23eaf38a0dd9}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Enable all Foreign Key Constraints &amp; Triggers 1"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{70A4522A-5F43-4839-B007-5B707253D003}"
+          SQLTask:SqlStatementSource="EXECUTE  [dbo].[usp_FDP_EnableDisable_Triggers_Constraints] @disable =0;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Facility"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{E86E9107-7433-40AB-8650-322DDF235BCE}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Facility">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Facility\Build Facility to Delete List"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{C6A18B5D-5813-438F-98A7-F9F81056961A}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:FailPackageOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Build Facility to Delete List"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Facility\Build Facility to Delete List\Flat File Source"
+                  componentClassID="Microsoft.FlatFileSource"
+                  contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Flat File Source"
+                  localeId="1033"
+                  name="Flat File Source"
+                  usesDispositions="true"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      description="Specifies whether zero-length columns are treated as null."
+                      name="RetainNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                      name="FileNameColumnName"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Facility\Build Facility to Delete List\Flat File Source.Connections[FlatFileConnection]"
+                      connectionManagerID="Package.ConnectionManagers[FacID's]"
+                      connectionManagerRefId="Package.ConnectionManagers[FacID's]"
+                      name="FlatFileConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Output]"
+                      name="Flat File Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Output].Columns[Column 0]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Column 0]"
+                          length="50"
+                          lineageId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Output].Columns[Column 0]"
+                          name="Column 0"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Column 0]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Column 0" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Error Output]"
+                      isErrorOut="true"
+                      name="Flat File Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          codePage="1252"
+                          dataType="text"
+                          description="Flat File Source Error Output Column"
+                          lineageId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          name="Flat File Source Error Output Column" />
+                        <outputColumn
+                          refId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Facility\Build Facility to Delete List\OLE DB Destination"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="OLE DB Destination"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[ETL].[FacilityToDelete]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[WEST-CL04SQL3\SQL3.DBA]"
+                      connectionManagerRefId="Package.ConnectionManagers[WEST-CL04SQL3\SQL3.DBA]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Column 0]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Column 0"
+                          externalMetadataColumnId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Facility_ID]"
+                          lineageId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Output].Columns[Column 0]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FTDID]"
+                          dataType="i4"
+                          name="FTDID" />
+                        <externalMetadataColumn
+                          refId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Facility_ID]"
+                          dataType="i4"
+                          name="Facility_ID" />
+                        <externalMetadataColumn
+                          refId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CreateDateTime]"
+                          dataType="dbTimeStamp"
+                          name="CreateDateTime" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Facility\Build Facility to Delete List.Paths[Flat File Source Output]"
+                  endId="Package\Facility\Build Facility to Delete List\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  name="Flat File Source Output"
+                  startId="Package\Facility\Build Facility to Delete List\Flat File Source.Outputs[Flat File Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Facility\Clear Facility List"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{B305A2BF-443B-45BE-A2FF-517369E4CB6C}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Clear Facility List"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+              SQLTask:SqlStatementSource="  TRUNCATE TABLE DBA.ETL.FacilityToDelete;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Facility.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{0AC4285B-D859-4245-92D8-054A53B5E363}"
+          DTS:From="Package\Facility\Clear Facility List"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Facility\Build Facility to Delete List" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Send Email on Complete"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:Disabled="True"
+      DTS:DTSID="{05FC0108-B3D3-4B91-B975-CA83DE248617}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Send Email on Complete"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+          SQLTask:SqlStatementSource="EXECUTE DBA.ETL.DBA_Send_Email;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Send Email on Start"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:Disabled="True"
+      DTS:DTSID="{d8245ffe-1246-423a-baa5-96a2b4b6dd1a}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Send Email on Start"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+          SQLTask:SqlStatementSource="EXECUTE DBA.[ETL].[DBA_Send_Email_Start]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SSIS Log Entry - End"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{5421153b-437f-4559-9af3-dc3d5fcac1a7}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SSIS Log Entry - End"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+          SQLTask:SqlStatementSource="UPDATE ETL.SSIS_Log&#xA;SET EndTime = GETDATE()&#xA;FROM ETL.SSIS_Log SL1 WHERE SLID = (SELECT MAX(SLID) FROM ETL.SSIS_Log SL2 WHERE SL2.PackageName = 'PSIDEP_ROX_Data_Scrub' AND EndTime IS NULL)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SSIS Log Entry - Start"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{861F8421-4C35-4DD2-A315-A90FB08C4794}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SSIS Log Entry - Start"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{3FEC3571-8068-4036-885A-9605B8057FAF}"
+          SQLTask:SqlStatementSource="INSERT INTO ETL.SSIS_Log (packagename, starttime)&#xA;SELECT 'PSIDEP_ROX_Data_Scrub', getdate()&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{58CD90D4-4006-4B28-ACD9-831A34E56205}"
+      DTS:From="Package\SSIS Log Entry - Start"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Facility" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{291578AF-D1F8-4DCA-B472-95D9426F9098}"
+      DTS:From="Package\Data Scrub 1"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Data Scrub 2" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{5DA765E8-637B-4D32-91A5-1B3177AA729F}"
+      DTS:From="Package\Send Email on Complete"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\SSIS Log Entry - End" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{46B17975-F358-4DCE-B830-A7A71B54ECC6}"
+      DTS:From="Package\Facility"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Disable all Foreign Key Constraints &amp; Triggers" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{662D0721-207A-4C24-A1BA-148524A5EF49}"
+      DTS:From="Package\Data Scrub 2"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Enable all Foreign Key Constraints &amp; Triggers 1" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{694F3E2A-C989-4F1A-A9E9-DFC4245A63B7}"
+      DTS:From="Package\Enable all Foreign Key Constraints &amp; Triggers 1"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Send Email on Complete" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 6]"
+      DTS:CreationName=""
+      DTS:DTSID="{99E064E3-846F-4C08-893C-CB8E046EF70C}"
+      DTS:From="Package\Disable all Foreign Key Constraints &amp; Triggers"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 6"
+      DTS:To="Package\Data Scrub 1" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 7]"
+      DTS:CreationName=""
+      DTS:DTSID="{59953B49-4C7A-4414-84A6-97B252A988B7}"
+      DTS:From="Package\Send Email on Start"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 7"
+      DTS:To="Package\SSIS Log Entry - Start" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="64" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="298,42"
+          Id="Package\Data Scrub 1\Execute usp_FDP_P1T1_ResidentRoutePre"
+          TopLeft="47,107.5" />
+        <NodeLayout
+          Size="329,42"
+          Id="Package\Data Scrub 1\Execute usp_FDP_P1T2_TxSessionRouteDeletion"
+          TopLeft="31.5000000000001,311.5" />
+        <NodeLayout
+          Size="340,42"
+          Id="Package\Data Scrub 1\Execute usp_FDP_P1T3_TxDocumentRouteDeletion"
+          TopLeft="26.0000000000001,515.5" />
+        <NodeLayout
+          Size="317,42"
+          Id="Package\Data Scrub 1\Execute usp_FDP_P1T4_TxTrackRouteDeletion"
+          TopLeft="37.5000000000001,719.5" />
+        <NodeLayout
+          Size="338,42"
+          Id="Package\Data Scrub 1\Execute usp_FDP_P1T5_PatientCaseRouteDeletion"
+          TopLeft="27.0000000000001,923.5" />
+        <NodeLayout
+          Size="303,42"
+          Id="Package\Data Scrub 1\Execute usp_FDP_P1T6_ResidentRoutePost"
+          TopLeft="44.5000000000001,1127.5" />
+        <NodeLayout
+          Size="262,42"
+          Id="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T1_ResidentRoute"
+          TopLeft="65,209.5" />
+        <NodeLayout
+          Size="370,42"
+          Id="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T2_TxSessionRouteDeletion"
+          TopLeft="11.0000000000001,413.5" />
+        <NodeLayout
+          Size="381,42"
+          Id="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T3_TxDocumentRouteDeletion"
+          TopLeft="5.50000000000009,617.5" />
+        <NodeLayout
+          Size="359,42"
+          Id="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T4_TxTrackRouteDeletion"
+          TopLeft="16.5000000000001,821.5" />
+        <NodeLayout
+          Size="379,42"
+          Id="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T5_PatientCaseRouteDeletion"
+          TopLeft="6.50000000000014,1025.5" />
+        <NodeLayout
+          Size="344,42"
+          Id="Package\Data Scrub 1\Data_Validation_usp_FDP_P1T6_ResidentRoutePost"
+          TopLeft="24.0000000000002,1229.5" />
+        <NodeLayout
+          Size="291,42"
+          Id="Package\Data Scrub 1\Truncate Table ROX Data Scrub Validation"
+          TopLeft="50.5,5.5" />
+        <EdgeLayout
+          Id="Package\Data Scrub 1.PrecedenceConstraints[Constraint]"
+          TopLeft="196,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 1.PrecedenceConstraints[Constraint 1]"
+          TopLeft="196,353.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 1.PrecedenceConstraints[Constraint 10]"
+          TopLeft="196,1067.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 1.PrecedenceConstraints[Constraint 11]"
+          TopLeft="196,1169.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 1.PrecedenceConstraints[Constraint 2]"
+          TopLeft="196,455.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 1.PrecedenceConstraints[Constraint 3]"
+          TopLeft="196,557.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 1.PrecedenceConstraints[Constraint 4]"
+          TopLeft="196,659.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 1.PrecedenceConstraints[Constraint 5]"
+          TopLeft="196,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 1.PrecedenceConstraints[Constraint 6]"
+          TopLeft="196,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 1.PrecedenceConstraints[Constraint 7]"
+          TopLeft="196,761.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 1.PrecedenceConstraints[Constraint 8]"
+          TopLeft="196,863.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 1.PrecedenceConstraints[Constraint 9]"
+          TopLeft="196,965.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="392,1326"
+          Size="392,1370"
+          Id="Package\Data Scrub 1"
+          TopLeft="406,137.25" />
+        <NodeLayout
+          Size="303,42"
+          Id="Package\Data Scrub 2\Execute usp_FDP_P2T1_FacilityPreRoute"
+          TopLeft="22,5.5" />
+        <NodeLayout
+          Size="336,42"
+          Id="Package\Data Scrub 2\Execute usp_FDP_P2T2_FacilityIntakeSourceRoute"
+          TopLeft="5.50000000000003,209.5" />
+        <NodeLayout
+          Size="294,42"
+          Id="Package\Data Scrub 2\Execute usp_FDP_P2T3_FacilityPostRoute"
+          TopLeft="26.5000000000001,413.5" />
+        <NodeLayout
+          Size="185,42"
+          Id="Package\Data Scrub 2\P2T1_DataValidation"
+          TopLeft="81,107.5" />
+        <NodeLayout
+          Size="185,42"
+          Id="Package\Data Scrub 2\P2T2_DataValidation"
+          TopLeft="81,311.5" />
+        <NodeLayout
+          Size="185,42"
+          Id="Package\Data Scrub 2\P2T3_DataValidation"
+          TopLeft="81.0000000000001,515.5" />
+        <NodeLayout
+          Size="251,42"
+          Id="Package\Data Scrub 2\usp_FDP_P2T4_FacilityPostRoute"
+          TopLeft="48.0000000000001,617.5" />
+        <NodeLayout
+          Size="258,42"
+          Id="Package\Data Scrub 2\usp_FDP_P2T5_FacilityPostRoute"
+          TopLeft="44.5000000000001,719.5" />
+        <NodeLayout
+          Size="253,42"
+          Id="Package\Data Scrub 2\usp_FDP_P2T6_FacilityPostRoute"
+          TopLeft="47.0000000000001,821.5" />
+        <EdgeLayout
+          Id="Package\Data Scrub 2.PrecedenceConstraints[Constraint]"
+          TopLeft="173.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 2.PrecedenceConstraints[Constraint 1]"
+          TopLeft="173.5,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 2.PrecedenceConstraints[Constraint 2]"
+          TopLeft="173.5,455.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 2.PrecedenceConstraints[Constraint 3]"
+          TopLeft="173.5,659.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 2.PrecedenceConstraints[Constraint 4]"
+          TopLeft="173.5,761.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 2.PrecedenceConstraints[Constraint 5]"
+          TopLeft="173.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 2.PrecedenceConstraints[Constraint 6]"
+          TopLeft="173.5,353.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Scrub 2.PrecedenceConstraints[Constraint 7]"
+          TopLeft="173.5,557.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="194,42"
+          Id="Package\Data Scrub 2\P2T6_DataValidation"
+          TopLeft="76.5000000000001,923.5" />
+        <EdgeLayout
+          Id="Package\Data Scrub 2.PrecedenceConstraints[Constraint 8]"
+          TopLeft="173.5,863.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="347,1020"
+          Size="347,1064"
+          Id="Package\Data Scrub 2"
+          TopLeft="1040.25,129.980158730158" />
+        <NodeLayout
+          Size="306,42"
+          Id="Package\Disable all Foreign Key Constraints &amp; Triggers"
+          TopLeft="34.8571428571428,799.142857142857" />
+        <NodeLayout
+          Size="210,42"
+          Id="Package\Facility\Build Facility to Delete List"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="165,42"
+          Id="Package\Facility\Clear Facility List"
+          TopLeft="28,5.5" />
+        <EdgeLayout
+          Id="Package\Facility.PrecedenceConstraints[Constraint]"
+          TopLeft="110.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="221,204"
+          Size="221,248"
+          Id="Package\Facility"
+          TopLeft="70,421" />
+        <NodeLayout
+          Size="202,42"
+          Id="Package\Send Email on Complete"
+          TopLeft="1115.39682539683,1391.90476190476" />
+        <NodeLayout
+          Size="179,42"
+          Id="Package\Send Email on Start"
+          TopLeft="90.6349206349208,101.111111111111" />
+        <NodeLayout
+          Size="185,42"
+          Id="Package\SSIS Log Entry - End"
+          TopLeft="1129.93650793651,1511.61904761905" />
+        <NodeLayout
+          Size="189,42"
+          Id="Package\SSIS Log Entry - Start"
+          TopLeft="93,264" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="184,306">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,115"
+              Start="0,0"
+              End="0,107.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,107.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="798,822.25">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="242.25,-336.269841269842"
+              Start="0,0"
+              End="234.75,-336.269841269842">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="141.131756756757,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="141.131756756757,0"
+                    Point2="145.131756756757,0"
+                    Point3="145.131756756757,-4" />
+                  <mssgle:LineSegment
+                    End="145.131756756757,-332.269841269842" />
+                  <mssgle:CubicBezierSegment
+                    Point1="145.131756756757,-332.269841269842"
+                    Point2="145.131756756757,-336.269841269842"
+                    Point3="149.131756756757,-336.269841269842" />
+                  <mssgle:LineSegment
+                    End="234.75,-336.269841269842" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="1219.41666666667,1433.90476190476">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,77.7142857142853"
+              Start="0,0"
+              End="0,70.2142857142853">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,70.2142857142853" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="184.178571428571,669">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,130.142857142857"
+              Start="0,0"
+              End="0,122.642857142857">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,122.642857142857" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 6]"
+          TopLeft="340.857142857143,821.196428571429">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="65.1428571428572,0"
+              Start="0,0"
+              End="57.6428571428572,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="57.6428571428572,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 7]"
+          TopLeft="183.81746031746,143.111111111111">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,120.888888888889"
+              Start="0,0"
+              End="0,113.388888888889">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,113.388888888889" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="313,42"
+          Id="Package\Enable all Foreign Key Constraints &amp; Triggers 1"
+          TopLeft="1058,1250.71428571429" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="1214.125,1193.98015873016">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,56.7341269841277"
+              Start="0,0"
+              End="0,49.2341269841277">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,49.2341269841277" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="1215.44841269841,1292.71428571429">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,99.1904761904766"
+              Start="0,0"
+              End="0,91.6904761904766">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,91.6904761904766" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Facility\Build Facility to Delete List">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Facility\Build Facility to Delete List\Flat File Source"
+          TopLeft="300,115" />
+        <NodeLayout
+          Size="179,42"
+          Id="Package\Facility\Build Facility to Delete List\OLE DB Destination"
+          TopLeft="289,257" />
+        <EdgeLayout
+          Id="Package\Facility\Build Facility to Delete List.Paths[Flat File Source Output]"
+          TopLeft="378.75,157">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,100"
+              Start="0,0"
+              End="0,92.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,92.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Facility\Build Facility to Delete List\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

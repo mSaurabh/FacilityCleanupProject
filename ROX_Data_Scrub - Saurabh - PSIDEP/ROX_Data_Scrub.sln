@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "ROX_Data_Scrub", "ROX_Data_Scrub\ROX_Data_Scrub.dtproj", "{5326D34A-6977-4BE8-BB1F-A7BA26B704FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5326D34A-6977-4BE8-BB1F-A7BA26B704FF}.Development|Default.ActiveCfg = Development
+		{5326D34A-6977-4BE8-BB1F-A7BA26B704FF}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {26AD0F17-BAC8-42B2-BAE1-6D36541A7451}
+	EndGlobalSection
+EndGlobal
